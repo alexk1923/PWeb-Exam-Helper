@@ -39,9 +39,13 @@ public class StudentService implements IStudentService{
     @Override
     public StudentDTO updateStudent(Long id, StudentDTO updateData) {
         Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException());
-        student.setFirstName(updateData.getFirstName());
-        student.setLastName(updateData.getLastName());
-//      student.setUsername(updateData.getUsername());
+        if(updateData.getFirstName().length() > 0) {
+            student.setFirstName(updateData.getFirstName());
+        }
+
+        if(updateData.getLastName().length() > 0) {
+            student.setLastName(updateData.getLastName());
+        }
 
         Student updatedStudent = studentRepository.save(student);
         return StudentMapper.mapToStudentDTO(updatedStudent);

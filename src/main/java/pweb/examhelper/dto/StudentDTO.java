@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StudentDTO {
+    private Long id;
     private String username;
     private String firstName;
     private String lastName;

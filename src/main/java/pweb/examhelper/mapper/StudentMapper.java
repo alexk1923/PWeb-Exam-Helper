@@ -5,7 +5,7 @@ import pweb.examhelper.entity.Student;
 
 public class StudentMapper {
     public static StudentDTO mapToStudentDTO(Student student) {
-        return new StudentDTO(student.getUsername(), student.getFirstName(), student.getLastName(),
+        return new StudentDTO(student.getId(), student.getUsername(), student.getFirstName(), student.getLastName(),
                 student.getEmail());
     }
 
