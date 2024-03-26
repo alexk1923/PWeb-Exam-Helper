@@ -1,13 +1,10 @@
 package pweb.examhelper.controller;
 
-import io.swagger.v3.core.util.Json;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pweb.examhelper.dto.QuestionDTO;
-import pweb.examhelper.dto.StudentDTO;
-import pweb.examhelper.entity.Question;
 import pweb.examhelper.response.JsonResponse;
 import pweb.examhelper.service.QuestionService;
 
@@ -21,8 +18,7 @@ public class QuestionController {
 
     @GetMapping
     public List<QuestionDTO> getAllQuestions() {
-        List<QuestionDTO> questions = questionService.getAllQuestions();
-        return questions;
+        return questionService.getAllQuestions();
     }
 
     @PostMapping()

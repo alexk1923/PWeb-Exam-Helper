@@ -1,7 +1,7 @@
 package pweb.examhelper.enums;
 
 public enum Role {
-    ADMIN,
+    READER,
     PARTICIPANT,
-    READER
+    ADMIN,
 }

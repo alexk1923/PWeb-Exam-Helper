@@ -8,11 +8,11 @@ import java.util.stream.Collectors;
 public class QuestionMapper {
     public static QuestionDTO mapToQuestionDTO(Question question) {
         return new QuestionDTO(question.getId(), question.getText(), question.getAnswers().stream()
-                .map(a -> AnswerMapper.mapToAnswerDTO(a)).collect(Collectors.toList()));
+                .map(AnswerMapper::mapToAnswerDTO).collect(Collectors.toList()));
     }
 
     public static Question mapToQuestion(QuestionDTO questionDTO) {
         return new Question(questionDTO.getId(), questionDTO.getText(), questionDTO.getAnswers().stream()
-                .map(a -> AnswerMapper.mapToAnswer(a)).collect(Collectors.toList()));
+                .map(AnswerMapper::mapToAnswer).collect(Collectors.toList()));
     }
 }

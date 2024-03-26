@@ -7,8 +7,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class AnswerDTO {
-    private long id;
-    private String text;
-    private Boolean isCorrect;
+public class GroupDTOCreation {
+    private GroupDTO groupDTO;
+    private Long defaultAdminId;
+
 }

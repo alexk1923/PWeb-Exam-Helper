@@ -3,6 +3,8 @@ package pweb.examhelper.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "student")
 @NoArgsConstructor
@@ -19,4 +21,6 @@ public class Student {
     @NonNull private String lastName;
     @NonNull private String email;
 
+    @OneToMany(mappedBy = "student")
+    private List<GroupStudent> groups;
 }

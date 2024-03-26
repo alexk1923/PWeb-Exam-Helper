@@ -2,26 +2,20 @@ package pweb.examhelper.service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import pweb.examhelper.dto.AnswerDTO;
 import pweb.examhelper.dto.QuestionDTO;
 import pweb.examhelper.entity.Answer;
 import pweb.examhelper.entity.Question;
-import pweb.examhelper.entity.Student;
 import pweb.examhelper.logger.LoggingController;
 import pweb.examhelper.mapper.AnswerMapper;
 import pweb.examhelper.mapper.QuestionMapper;
-import pweb.examhelper.mapper.StudentMapper;
 import pweb.examhelper.repository.AnswerRepository;
 import pweb.examhelper.repository.QuestionRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static org.apache.coyote.http11.Constants.a;
 
 @AllArgsConstructor
 @Service
@@ -50,12 +44,12 @@ public class QuestionService implements IQuestionService{
     @Override
     public List<QuestionDTO> getAllQuestions() {
         List<Question> questions = questionRepository.findAll();
-        return questions.stream().map(q -> QuestionMapper.mapToQuestionDTO(q)).collect(Collectors.toList());
+        return questions.stream().map(QuestionMapper::mapToQuestionDTO).collect(Collectors.toList());
     }
 
     @Override
     public QuestionDTO getQuestion(Long id) {
-        Question question = questionRepository.findById(id).orElseThrow(() -> new RuntimeException());
+        Question question = questionRepository.findById(id).orElseThrow(RuntimeException::new);
         return QuestionMapper.mapToQuestionDTO(question);
     }
 
@@ -64,7 +58,7 @@ public class QuestionService implements IQuestionService{
     @Transactional
     public QuestionDTO updateQuestion(Long id, QuestionDTO updateData) {
         LoggingController.getLogger().info("Starting to update question with id " + id);
-        Question question = questionRepository.findById(id).orElseThrow(() -> new RuntimeException());
+        Question question = questionRepository.findById(id).orElseThrow(RuntimeException::new);
         if(updateData.getText().length() > 0) {
             question.setText(updateData.getText());
         }
@@ -74,7 +68,7 @@ public class QuestionService implements IQuestionService{
         LoggingController.getLogger().info("Question from database has the following answers");
         for(Answer a : question.getAnswers()) {
             LoggingController.getLogger().info(a.getText() + ", isCorrect: "
-                    + a.getIsCorrect().toString());
+                    + a.getIsCorrect());
         }
 
         // Delete old answers
@@ -126,7 +120,7 @@ public class QuestionService implements IQuestionService{
 
     @Override
     public void deleteQuestion(Long id) {
-        Question deletedQuestion = questionRepository.findById(id).orElseThrow(() -> new RuntimeException());
+        Question deletedQuestion = questionRepository.findById(id).orElseThrow(RuntimeException::new);
         questionRepository.delete(deletedQuestion);
     }
 }

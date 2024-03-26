@@ -1,7 +1,6 @@
 package pweb.examhelper.service;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import pweb.examhelper.dto.StudentDTO;
 import pweb.examhelper.entity.Student;
@@ -27,18 +26,18 @@ public class StudentService implements IStudentService{
     @Override
     public List<StudentDTO> getAllStudents() {
         List<Student> studentsList = studentRepository.findAll();
-        return studentsList.stream().map((s) -> StudentMapper.mapToStudentDTO(s)).collect(Collectors.toList());
+        return studentsList.stream().map(StudentMapper::mapToStudentDTO).collect(Collectors.toList());
     }
 
     @Override
     public StudentDTO getStudent(Long id) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException());
+        Student student = studentRepository.findById(id).orElseThrow(RuntimeException::new);
         return StudentMapper.mapToStudentDTO(student);
     }
 
     @Override
     public StudentDTO updateStudent(Long id, StudentDTO updateData) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException());
+        Student student = studentRepository.findById(id).orElseThrow(RuntimeException::new);
         if(updateData.getFirstName().length() > 0) {
             student.setFirstName(updateData.getFirstName());
         }
@@ -53,7 +52,7 @@ public class StudentService implements IStudentService{
 
     @Override
     public void deleteStudent(Long id) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException());
+        Student student = studentRepository.findById(id).orElseThrow(RuntimeException::new);
         studentRepository.delete(student);
     }
 }

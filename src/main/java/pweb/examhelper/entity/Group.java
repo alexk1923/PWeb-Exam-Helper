@@ -1,18 +1,17 @@
 package pweb.examhelper.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.NonNull;
-import pweb.examhelper.enums.Role;
+import jakarta.persistence.*;
+import lombok.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
+@NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
+@Table(name = "group_table")
+@Entity
+@Getter
+@Setter
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +19,7 @@ public class Group {
     @NonNull
     private String name;
 
-    @OneToMany
-    private Map<Student, Role> studentsMap = new HashMap<>();
+    @OneToMany(mappedBy = "group")
+    private Set<GroupStudent> groupStudents;
 
 }
