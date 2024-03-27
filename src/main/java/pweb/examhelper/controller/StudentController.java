@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pweb.examhelper.dto.StudentDTO;
+import pweb.examhelper.dto.StudentCreationDTO;
+import pweb.examhelper.dto.StudentUpdateDTO;
 import pweb.examhelper.service.StudentService;
 
 import java.util.List;
@@ -17,8 +19,8 @@ public class StudentController {
     private StudentService studentService;
 
     @PostMapping
-    public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO) {
-        StudentDTO savedStudent = studentService.createStudent(studentDTO);
+    public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentCreationDTO studentCreationDTO) {
+        StudentDTO savedStudent = studentService.createStudent(studentCreationDTO);
         return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
     }
 
@@ -36,7 +38,7 @@ public class StudentController {
 
     @PutMapping("{id}")
     public ResponseEntity<StudentDTO> updateStudent(@PathVariable("id") Long id,
-                                                    @RequestBody StudentDTO updatedStudentDTO) {
+                                                    @RequestBody StudentUpdateDTO updatedStudentDTO) {
         StudentDTO afterUpdateStudentDTO = studentService.updateStudent(id, updatedStudentDTO);
         return new ResponseEntity<>(afterUpdateStudentDTO, HttpStatus.OK);
     }

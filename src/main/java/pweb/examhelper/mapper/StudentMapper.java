@@ -1,10 +1,8 @@
 package pweb.examhelper.mapper;
 
-import pweb.examhelper.dto.GroupDTO;
 import pweb.examhelper.dto.GroupStudentDTO;
 import pweb.examhelper.dto.StudentDTO;
-import pweb.examhelper.entity.Group;
-import pweb.examhelper.entity.GroupStudent;
+import pweb.examhelper.dto.StudentCreationDTO;
 import pweb.examhelper.entity.Student;
 
 import java.util.ArrayList;
@@ -24,9 +22,11 @@ public class StudentMapper {
                 student.getEmail(), groupStudentDTOList);
     }
 
+    public static Student mapToStudent(StudentCreationDTO studentCreationDTO) {
+        return new Student(studentCreationDTO.getUsername(), studentCreationDTO.getFirstName(), studentCreationDTO.getLastName(), studentCreationDTO.getEmail());
+    }
+
     public static Student mapToStudent(StudentDTO studentDTO) {
-
-
         return new Student(studentDTO.getUsername(), studentDTO.getFirstName(),
                 studentDTO.getLastName(), studentDTO.getEmail());
     }

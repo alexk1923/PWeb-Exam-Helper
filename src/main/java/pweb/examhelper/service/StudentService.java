@@ -3,6 +3,8 @@ package pweb.examhelper.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pweb.examhelper.dto.StudentDTO;
+import pweb.examhelper.dto.StudentCreationDTO;
+import pweb.examhelper.dto.StudentUpdateDTO;
 import pweb.examhelper.entity.Student;
 import pweb.examhelper.mapper.StudentMapper;
 import pweb.examhelper.repository.StudentRepository;
@@ -17,8 +19,8 @@ public class StudentService implements IStudentService{
     private StudentRepository studentRepository;
 
     @Override
-    public StudentDTO createStudent(StudentDTO studentDTO) {
-        Student student = StudentMapper.mapToStudent(studentDTO);
+    public StudentDTO createStudent(StudentCreationDTO studentCreationDTO) {
+        Student student = StudentMapper.mapToStudent(studentCreationDTO);
         Student savedStudent = studentRepository.save(student);
         return StudentMapper.mapToStudentDTO(savedStudent);
     }
@@ -36,7 +38,7 @@ public class StudentService implements IStudentService{
     }
 
     @Override
-    public StudentDTO updateStudent(Long id, StudentDTO updateData) {
+    public StudentDTO updateStudent(Long id, StudentUpdateDTO updateData) {
         Student student = studentRepository.findById(id).orElseThrow(RuntimeException::new);
         if(updateData.getFirstName().length() > 0) {
             student.setFirstName(updateData.getFirstName());
