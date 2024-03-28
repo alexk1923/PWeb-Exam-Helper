@@ -1,5 +1,6 @@
 package pweb.examhelper.mapper;
 
+import pweb.examhelper.dto.group.GroupInfoDTO;
 import pweb.examhelper.dto.group.GroupStudentDTO;
 import pweb.examhelper.dto.student.StudentDTO;
 import pweb.examhelper.dto.student.StudentCreationDTO;
@@ -12,12 +13,13 @@ import java.util.stream.Collectors;
 public class StudentMapper {
     public static StudentDTO mapToStudentDTO(Student student) {
 
-        List<GroupStudentDTO> groupStudentDTOList;
+        List<GroupInfoDTO> groupStudentDTOList;
         if(student.getGroups() != null && student.getGroups().size() > 0) {
-            groupStudentDTOList = student.getGroups().stream().map(GroupStudentMapper::mapToGroupStudentDTO).collect(Collectors.toList());
+            groupStudentDTOList = student.getGroups().stream().map(g -> new GroupInfoDTO(g.getGroup().getId(), g.getGroup().getName())).collect(Collectors.toList());
         } else {
             groupStudentDTOList = new ArrayList<>();
         }
+
         return new StudentDTO(student.getId(), student.getUsername(), student.getFirstName(), student.getLastName(),
                 student.getEmail(), groupStudentDTOList);
     }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import pweb.examhelper.dto.group.GroupInfoDTO;
 import pweb.examhelper.dto.group.GroupStudentDTO;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class StudentDTO {
     @NotNull
     private String email;
 
-    private List<GroupStudentDTO> groups;
+    private List<GroupInfoDTO> groups;
 
 
 

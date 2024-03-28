@@ -14,6 +14,6 @@ public class GroupDTO {
     private Long id;
     @NonNull
     private String name;
-    private Set<GroupStudentDTO> groupStudents;
+    private Set<MemberInfoDTO> groupStudents;
     private Integer numberOfStudents;
 }
