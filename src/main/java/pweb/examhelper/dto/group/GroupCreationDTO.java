@@ -9,7 +9,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class GroupDTOCreation {
+public class GroupCreationDTO {
     private Long id;
     @NonNull
     private String name;

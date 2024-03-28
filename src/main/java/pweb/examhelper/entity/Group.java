@@ -19,7 +19,7 @@ public class Group {
     @NonNull
     private String name;
 
-    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<GroupStudent> groupStudents;
 
 }

@@ -1,11 +1,11 @@
 package pweb.examhelper.controller;
 
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.EnumUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pweb.examhelper.dto.group.GroupDTO;
-import pweb.examhelper.dto.group.GroupDTOCreation;
+import pweb.examhelper.dto.group.*;
 import pweb.examhelper.dto.student.StudentDTO;
 import pweb.examhelper.enums.Role;
 import pweb.examhelper.response.JsonResponse;
@@ -24,9 +24,9 @@ public class GroupController {
     }
 
     @PostMapping
-    public ResponseEntity<GroupDTO> createGroup(@RequestBody GroupDTOCreation groupDTOCreation) {
+    public ResponseEntity<GroupDTO> createGroup(@RequestBody GroupCreationDTO groupCreationDTO) {
 
-        GroupDTO savedGroup = groupService.createGroup(groupDTOCreation);
+        GroupDTO savedGroup = groupService.createGroup(groupCreationDTO);
         return new ResponseEntity<>(savedGroup, HttpStatus.CREATED);
     }
 
@@ -36,25 +36,35 @@ public class GroupController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<JsonResponse> changeGroupName(@RequestBody String newName,
+    public ResponseEntity<JsonResponse> changeGroupName(@RequestBody GroupUpdateNameDTO groupUpdateNameDTO,
                                                         @PathVariable Long id) {
-        groupService.changeGroupName(newName, id);
-        return ResponseEntity.ok(new JsonResponse("Changed group name with id " + id + " to " + newName));
+        groupService.changeGroupName(groupUpdateNameDTO.getNewName(), id);
+        return ResponseEntity.ok(new JsonResponse("Changed group name with id " + id + " to "
+                + groupUpdateNameDTO.getNewName()));
     }
 
-    @PostMapping("{groupId}/members")
-    public ResponseEntity<StudentDTO> addStudentToGroup(@RequestBody StudentDTO studentDTO,
-                                                        @PathVariable Long groupId) {
-        StudentDTO savedStudentGroup = groupService.addStudentToGroup(studentDTO, groupId);
-        return new ResponseEntity<>(savedStudentGroup, HttpStatus.OK);
+    @PostMapping("/{groupId}/members")
+    public ResponseEntity<StudentDTO> addStudentToGroup(@PathVariable("groupId") Long groupId,
+                                                        @RequestBody GroupStudentAddDTO addStudentDTO) {
+        if(EnumUtils.isValidEnum(Role.class, addStudentDTO.getRole())) {
+            StudentDTO savedStudentGroup = groupService.addStudentToGroup(addStudentDTO, groupId);
+            return new ResponseEntity<>(savedStudentGroup, HttpStatus.OK);
+        } else {
+            throw new RuntimeException();
+        }
+
     }
 
     @PutMapping("{groupId}/members/")
-    public ResponseEntity<JsonResponse> changeStudentRole(@RequestBody Role newRole,
-                                                          @RequestBody Long studentId,
+    public ResponseEntity<JsonResponse> changeStudentRole(@RequestBody GroupStudentUpdateRoleDTO updateRoleDTO,
                                                            Long groupId) {
-        groupService.changeStudentGroupRole(newRole, studentId, groupId);
-        return ResponseEntity.ok(new JsonResponse("Changed role for "  + studentId));
+        if(EnumUtils.isValidEnum(Role.class, updateRoleDTO.getNewRole())) {
+            StudentDTO student =  groupService.changeStudentGroupRole(Role.valueOf(updateRoleDTO.getNewRole()), updateRoleDTO.getStudentId() , groupId);
+            return ResponseEntity.ok(new JsonResponse("Changed role for "  + updateRoleDTO.getStudentId() + "to " + updateRoleDTO.getNewRole()));
+        } else {
+            throw new RuntimeException();
+        }
+
     }
 
     @DeleteMapping("{groupId}/members/{studentId}")

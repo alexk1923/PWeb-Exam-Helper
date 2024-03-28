@@ -1,18 +1,19 @@
 package pweb.examhelper.dto.group;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import pweb.examhelper.enums.Role;
 
-@NoArgsConstructor
+import java.util.List;
+
 @AllArgsConstructor
 @Getter
 @Setter
-public class MemberInfoDTO {
+public class GroupStudentAddDTO {
     @NotNull
     private Long id;
-    @NonNull
-    private String username;
-    @NonNull
-    private Role role;
+    @NotNull
+    private String role;
 }
