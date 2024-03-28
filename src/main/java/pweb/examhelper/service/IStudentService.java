@@ -1,8 +1,8 @@
 package pweb.examhelper.service;
 
-import pweb.examhelper.dto.StudentDTO;
-import pweb.examhelper.dto.StudentCreationDTO;
-import pweb.examhelper.dto.StudentUpdateDTO;
+import pweb.examhelper.dto.student.StudentDTO;
+import pweb.examhelper.dto.student.StudentCreationDTO;
+import pweb.examhelper.dto.student.StudentUpdateDTO;
 
 import java.util.List;
 

@@ -1,11 +1,11 @@
-package pweb.examhelper.dto;
+package pweb.examhelper.dto.student;
 
-import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import pweb.examhelper.dto.group.GroupStudentDTO;
 
 import java.util.List;
 

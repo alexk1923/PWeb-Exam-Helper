@@ -3,8 +3,7 @@ package pweb.examhelper.service;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pweb.examhelper.dto.AnswerDTO;
-import pweb.examhelper.dto.QuestionDTO;
+import pweb.examhelper.dto.question.*;
 import pweb.examhelper.entity.Answer;
 import pweb.examhelper.entity.Question;
 import pweb.examhelper.logger.LoggingController;
@@ -25,7 +24,7 @@ public class QuestionService implements IQuestionService{
     private AnswerRepository answerRepository;
 
     @Override
-    public QuestionDTO createQuestion(QuestionDTO questionDTO) {
+    public QuestionDTO createQuestion(QuestionCreationDTO questionDTO) {
         Question q = QuestionMapper.mapToQuestion(questionDTO);
 
         List<Answer> newAnswers = new ArrayList<>();
@@ -56,66 +55,43 @@ public class QuestionService implements IQuestionService{
 
     @Override
     @Transactional
-    public QuestionDTO updateQuestion(Long id, QuestionDTO updateData) {
+    public QuestionDTO updateQuestion(Long id, QuestionUpdateDTO updateData) {
         LoggingController.getLogger().info("Starting to update question with id " + id);
         Question question = questionRepository.findById(id).orElseThrow(RuntimeException::new);
+
+        // Update text if not empty
         if(updateData.getText().length() > 0) {
             question.setText(updateData.getText());
         }
 
         List<Answer> newAnswers = new ArrayList<>();
 
-        LoggingController.getLogger().info("Question from database has the following answers");
-        for(Answer a : question.getAnswers()) {
-            LoggingController.getLogger().info(a.getText() + ", isCorrect: "
-                    + a.getIsCorrect());
-        }
-
         // Delete old answers
         for(Answer existingAnswer : question.getAnswers()) {
             boolean isPresent = false;
-            for(AnswerDTO newAnswer : updateData.getAnswers()) {
-                if(newAnswer.getText().equals(existingAnswer.getText())) {
+            for(AnswerDTOCreation newAnswer : updateData.getAnswers()) {
+                if(newAnswer.getText().equals(existingAnswer.getText()) && newAnswer.getIsCorrect().equals(existingAnswer.getIsCorrect())) {
                     isPresent = true;
                     break;
                 }
             }
 
             if(!isPresent) {
-                LoggingController.getLogger().info("Answer" +
-                        existingAnswer.getText() + ",id: " + existingAnswer.getId() +
-                        " will be deleted" );
+                // Delete invalid answers
                 answerRepository.deleteById(existingAnswer.getId());
-            } else {
-                LoggingController.getLogger().info("Keeping the answer, because it is present in the" +
-                        "given array");
             }
         }
 
-
-        for(AnswerDTO aDTO : updateData.getAnswers()) {
+        for(AnswerDTOCreation aDTO : updateData.getAnswers()) {
             Answer a = AnswerMapper.mapToAnswer(aDTO);
-
-            boolean justUpdate = false;
-            for(Answer existingAnswer : question.getAnswers()) {
-                if(existingAnswer.getText().equals(a.getText())) {
-                    existingAnswer.setIsCorrect(a.getIsCorrect());
-                    answerRepository.save(existingAnswer);
-                    justUpdate = true;
-                    break;
-                }
-            }
-
-            if(!justUpdate) {
-                a.setQuestion(question);
-                newAnswers.add(a);
-            }
+            a.setQuestion(question);
+            newAnswers.add(a);
         }
+
 
         question.setAnswers(newAnswers);
-        Question updatedQuestion = questionRepository.save(question);
-        LoggingController.getLogger().info("DONE UPDATING QUESTION!");
-        return QuestionMapper.mapToQuestionDTO(updatedQuestion);
+        Question afterUpdateQuestion = questionRepository.save(question);
+        return QuestionMapper.mapToQuestionDTO(afterUpdateQuestion);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package pweb.examhelper.dto;
+package pweb.examhelper.dto.question;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class QuestionDTO {
-    private Long id;
+public class QuestionUpdateDTO {
     private String text;
-    private List<AnswerDTO> answers;
+    private List<AnswerDTOCreation> answers;
 }

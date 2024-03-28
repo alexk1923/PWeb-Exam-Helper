@@ -1,8 +1,8 @@
 package pweb.examhelper.mapper;
 
-import pweb.examhelper.dto.GroupStudentDTO;
-import pweb.examhelper.dto.StudentDTO;
-import pweb.examhelper.dto.StudentCreationDTO;
+import pweb.examhelper.dto.group.GroupStudentDTO;
+import pweb.examhelper.dto.student.StudentDTO;
+import pweb.examhelper.dto.student.StudentCreationDTO;
 import pweb.examhelper.entity.Student;
 
 import java.util.ArrayList;

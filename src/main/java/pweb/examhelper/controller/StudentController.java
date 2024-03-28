@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pweb.examhelper.dto.StudentDTO;
-import pweb.examhelper.dto.StudentCreationDTO;
-import pweb.examhelper.dto.StudentUpdateDTO;
+import pweb.examhelper.dto.student.StudentDTO;
+import pweb.examhelper.dto.student.StudentCreationDTO;
+import pweb.examhelper.dto.student.StudentUpdateDTO;
 import pweb.examhelper.service.StudentService;
 
 import java.util.List;

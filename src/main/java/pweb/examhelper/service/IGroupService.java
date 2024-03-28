@@ -1,7 +1,7 @@
 package pweb.examhelper.service;
 
-import pweb.examhelper.dto.GroupDTO;
-import pweb.examhelper.dto.StudentDTO;
+import pweb.examhelper.dto.group.GroupDTO;
+import pweb.examhelper.dto.student.StudentDTO;
 import pweb.examhelper.enums.Role;
 
 public interface IGroupService {

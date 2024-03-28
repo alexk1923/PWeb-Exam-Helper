@@ -1,14 +1,15 @@
-package pweb.examhelper.dto;
+package pweb.examhelper.dto.question;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Getter
 @Setter
-public class AnswerDTO {
-    private long id;
+public class QuestionCreationDTO {
     private String text;
-    private Boolean isCorrect;
+    private List<AnswerDTOCreation> answers;
 }

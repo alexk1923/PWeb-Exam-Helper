@@ -1,6 +1,6 @@
 package pweb.examhelper.mapper;
-import pweb.examhelper.dto.GroupDTO;
-import pweb.examhelper.dto.GroupStudentDTO;
+import pweb.examhelper.dto.group.GroupDTO;
+import pweb.examhelper.dto.group.GroupStudentDTO;
 import pweb.examhelper.entity.Group;
 import pweb.examhelper.entity.GroupStudent;
 

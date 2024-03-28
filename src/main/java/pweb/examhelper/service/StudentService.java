@@ -2,9 +2,9 @@ package pweb.examhelper.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pweb.examhelper.dto.StudentDTO;
-import pweb.examhelper.dto.StudentCreationDTO;
-import pweb.examhelper.dto.StudentUpdateDTO;
+import pweb.examhelper.dto.student.StudentDTO;
+import pweb.examhelper.dto.student.StudentCreationDTO;
+import pweb.examhelper.dto.student.StudentUpdateDTO;
 import pweb.examhelper.entity.Student;
 import pweb.examhelper.mapper.StudentMapper;
 import pweb.examhelper.repository.StudentRepository;

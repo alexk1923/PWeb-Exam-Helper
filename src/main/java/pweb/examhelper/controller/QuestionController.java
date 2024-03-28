@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pweb.examhelper.dto.QuestionDTO;
+import pweb.examhelper.dto.question.QuestionCreationDTO;
+import pweb.examhelper.dto.question.QuestionDTO;
+import pweb.examhelper.dto.question.QuestionUpdateDTO;
 import pweb.examhelper.response.JsonResponse;
 import pweb.examhelper.service.QuestionService;
 
@@ -22,8 +24,8 @@ public class QuestionController {
     }
 
     @PostMapping()
-    public ResponseEntity<QuestionDTO> createQuestion(@RequestBody QuestionDTO questionDTO) {
-        QuestionDTO savedQuestion = questionService.createQuestion(questionDTO);
+    public ResponseEntity<QuestionDTO> createQuestion(@RequestBody QuestionCreationDTO questionCreationDTO) {
+        QuestionDTO savedQuestion = questionService.createQuestion(questionCreationDTO);
         return new ResponseEntity<>(savedQuestion, HttpStatus.CREATED);
     }
 
@@ -35,8 +37,9 @@ public class QuestionController {
 
     @PutMapping("{id}")
     public ResponseEntity<QuestionDTO> updateQuestion(@PathVariable("id") Long id,
-                                                    @RequestBody QuestionDTO updateQuestionDTO) {
-        QuestionDTO afterUpdateQuestionDTO = questionService.updateQuestion(id, updateQuestionDTO);
+                                                    @RequestBody QuestionUpdateDTO updateQuestionDTO) {
+        questionService.updateQuestion(id, updateQuestionDTO);
+        QuestionDTO afterUpdateQuestionDTO = questionService.getQuestion(id);
         return new ResponseEntity<>(afterUpdateQuestionDTO, HttpStatus.OK);
     }
 

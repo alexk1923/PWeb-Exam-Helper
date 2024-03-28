@@ -2,14 +2,12 @@ package pweb.examhelper.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pweb.examhelper.dto.GroupDTO;
-import pweb.examhelper.dto.StudentDTO;
+import pweb.examhelper.dto.group.GroupDTO;
+import pweb.examhelper.dto.student.StudentDTO;
 import pweb.examhelper.entity.Group;
 import pweb.examhelper.enums.Role;
 import pweb.examhelper.mapper.GroupMapper;
 import pweb.examhelper.repository.GroupRepository;
-
-import javax.management.RuntimeErrorException;
 
 @AllArgsConstructor
 @Service
