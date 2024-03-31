@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import pweb.examhelper.dto.quiz.QuizAddQuestionDTO;
 import pweb.examhelper.dto.quiz.QuizCreationDTO;
 import pweb.examhelper.dto.quiz.QuizDTO;
+import pweb.examhelper.dto.quiz.QuizDeleteQuestionDTO;
 import pweb.examhelper.dto.subject.SubjectAddQuizDTO;
 import pweb.examhelper.dto.subject.SubjectCreationDTO;
 import pweb.examhelper.dto.subject.SubjectDTO;
@@ -57,5 +58,16 @@ public class SubjectController {
     @DeleteMapping("{id}")
     public void deleteSubject(@PathVariable Long id) {
         subjectService.deleteSubject(id);
+    }
+
+    @DeleteMapping("{subjectId}/quizzes/{quizId}")
+    public void deleteQuiz(@PathVariable Long subjectId, @PathVariable Long quizId) {
+        quizService.deleteQuiz(subjectId, quizId);
+    }
+
+    @DeleteMapping("{subjectId}/quizzes/{quizId}/questions/{questionId}")
+    public void deleteQuestionFromQuiz(@PathVariable Long subjectId, @PathVariable Long quizId,
+                                       @PathVariable Long questionId) {
+        quizService.deleteQuestionFromQuiz(subjectId, quizId, questionId);
     }
 }

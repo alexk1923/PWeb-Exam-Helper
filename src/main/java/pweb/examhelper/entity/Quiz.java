@@ -20,7 +20,7 @@ public class Quiz {
     @NonNull
     private String title;
 
-    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     @NonNull
     private List<QuizQuestion> questionList;
 

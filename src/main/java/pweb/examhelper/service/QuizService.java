@@ -10,6 +10,7 @@ import pweb.examhelper.entity.Question;
 import pweb.examhelper.entity.Quiz;
 import pweb.examhelper.entity.QuizQuestion;
 import pweb.examhelper.entity.Subject;
+import pweb.examhelper.logger.LoggingController;
 import pweb.examhelper.mapper.QuizMapper;
 import pweb.examhelper.repository.QuestionRepository;
 import pweb.examhelper.repository.SubjectRepository;
@@ -71,9 +72,15 @@ public class QuizService implements IQuizService{
         Subject subject = subjectRepository.findById(subjectId).orElseThrow(RuntimeException::new);
         for(Quiz q : subject.getQuizList()) {
             if(q.getId().equals(quizId)) {
+                LoggingController.getLogger().info("Se face remove totusi");
                 q.getQuestionList().removeIf(question -> question.getId().equals(questionId));
+//                for(QuizQuestion qst : q.getQuestionList()) {
+////                    LoggingController.getLogger()
+//                }
+                break;
             }
         }
+        subjectRepository.save(subject);
 
     }
 
@@ -81,5 +88,6 @@ public class QuizService implements IQuizService{
     public void deleteQuiz(Long subjectId, Long quizId) {
         Subject subject = subjectRepository.findById(subjectId).orElseThrow(RuntimeException::new);
         subject.getQuizList().removeIf(q -> q.getId().equals(quizId));
+        subjectRepository.save(subject);
     }
 }
