@@ -50,7 +50,7 @@ public class SubjectController {
     public ResponseEntity<QuizDTO> addQuestionToQuiz(@PathVariable Long subjectId,
                                                      @PathVariable Long quizId,
                                                      @RequestBody QuizAddQuestionDTO quizAddQuestionDTO) {
-        QuizDTO quizDTO = quizService.addQuestionToQuiz(subjectId, quizId, quizAddQuestionDTO);
+        QuizDTO quizDTO = quizService.addQuestionToQuiz(subjectId, quizId, quizAddQuestionDTO.getQuestionId());
         return ResponseEntity.ok(quizDTO);
     }
 

@@ -50,9 +50,9 @@ public class QuizService implements IQuizService{
 
 
     @Override
-    public QuizDTO addQuestionToQuiz(Long subjectId, Long quizId, QuizAddQuestionDTO quizAddQuestionDTO) {
+    public QuizDTO addQuestionToQuiz(Long subjectId, Long quizId, Long questionId) {
         Subject subject = subjectRepository.findById(subjectId).orElseThrow(RuntimeException::new);
-        Question question = questionRepository.findById(quizAddQuestionDTO.getQuestionId()).orElseThrow(RuntimeException::new);
+        Question question = questionRepository.findById(questionId).orElseThrow(RuntimeException::new);
         Quiz quiz = null;
 
         for(Quiz q : subject.getQuizList()) {
@@ -64,6 +64,22 @@ public class QuizService implements IQuizService{
 
         subjectRepository.save(subject);
         return QuizMapper.mapToQuizDTO(quiz);
+    }
 
+    @Override
+    public void deleteQuestionFromQuiz(Long subjectId, Long quizId, Long questionId) {
+        Subject subject = subjectRepository.findById(subjectId).orElseThrow(RuntimeException::new);
+        for(Quiz q : subject.getQuizList()) {
+            if(q.getId().equals(quizId)) {
+                q.getQuestionList().removeIf(question -> question.getId().equals(questionId));
+            }
+        }
+
+    }
+
+    @Override
+    public void deleteQuiz(Long subjectId, Long quizId) {
+        Subject subject = subjectRepository.findById(subjectId).orElseThrow(RuntimeException::new);
+        subject.getQuizList().removeIf(q -> q.getId().equals(quizId));
     }
 }
