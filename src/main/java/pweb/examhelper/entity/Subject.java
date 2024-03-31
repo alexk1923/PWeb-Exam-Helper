@@ -3,25 +3,23 @@ package pweb.examhelper.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
+@Entity
+@Table(name = "subject")
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Getter
 @Setter
-@Entity
-@Table(name = "answer")
-public class Answer {
+public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NonNull
-    private String text;
+    private String title;
 
-    @NonNull
-    private Boolean isCorrect;
-
-    @ManyToOne
-    @JoinColumn(name = "question_id", referencedColumnName="id")
-    private Question question;
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Quiz> quizList;
 }
