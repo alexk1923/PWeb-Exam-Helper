@@ -21,32 +21,32 @@ public class StudentController {
     @PostMapping
     public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentCreationDTO studentCreationDTO) {
         StudentDTO savedStudent = studentService.createStudent(studentCreationDTO);
-        return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedStudent);
     }
 
     @GetMapping
     public ResponseEntity<List<StudentDTO>> getAllStudents() {
         List<StudentDTO> studentsList = studentService.getAllStudents();
-        return new ResponseEntity<>(studentsList, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(studentsList);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<StudentDTO> getStudent(@PathVariable("id") Long id) {
         StudentDTO studentDTO = studentService.getStudent(id);
-        return new ResponseEntity <>(studentDTO, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(studentDTO);
     }
 
     @PutMapping("{id}")
     public ResponseEntity<StudentDTO> updateStudent(@PathVariable("id") Long id,
                                                     @RequestBody StudentUpdateDTO updatedStudentDTO) {
         StudentDTO afterUpdateStudentDTO = studentService.updateStudent(id, updatedStudentDTO);
-        return new ResponseEntity<>(afterUpdateStudentDTO, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(afterUpdateStudentDTO);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteStudent(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteStudent(@PathVariable("id") Long id) {
         studentService.deleteStudent(id);
-        return new ResponseEntity<>("Employee Deleted", HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 
 }
