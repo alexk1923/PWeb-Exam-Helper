@@ -59,7 +59,6 @@ public class QuestionService implements IQuestionService{
     @Override
     @Transactional
     public QuestionDTO updateQuestion(Long id, QuestionUpdateDTO updateData) {
-        LoggingController.getLogger().info("Starting to update question with id " + id);
         Question question = questionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.RESOURCE_NOT_FOUND));
 
