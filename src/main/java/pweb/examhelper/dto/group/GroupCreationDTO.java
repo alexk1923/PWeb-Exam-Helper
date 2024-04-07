@@ -1,19 +1,18 @@
 package pweb.examhelper.dto.group;
 
+import jakarta.validation.Valid;
 import lombok.*;
 
 import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Getter
 @Setter
 public class GroupCreationDTO {
-    private Long id;
-    @NonNull
+    @NonNull @Valid
     private String name;
-    @NonNull
+    @NonNull @Valid
     private Long defaultAdminId;
 
 }

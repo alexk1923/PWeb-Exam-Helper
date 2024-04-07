@@ -25,6 +25,6 @@ public class Student {
     @Column(unique=true)
     @NonNull private String email;
 
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<GroupStudent> groups;
 }

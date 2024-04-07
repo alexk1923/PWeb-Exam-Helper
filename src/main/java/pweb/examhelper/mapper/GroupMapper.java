@@ -18,7 +18,7 @@ public class GroupMapper {
 
     public static Group mapToGroup(GroupCreationDTO groupDTO) {
         Set<GroupStudent> groupStudentSet = new HashSet<>();
-        return new Group(groupDTO.getId(), groupDTO.getName(), groupStudentSet);
+        return new Group(groupDTO.getName(), groupStudentSet);
     }
 
     public static GroupDTO mapToGroupDTO(Group group) {

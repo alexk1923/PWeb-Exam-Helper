@@ -1,5 +1,6 @@
 package pweb.examhelper.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/questions")
+@Valid
 public class QuestionController {
     private QuestionService questionService;
 
@@ -24,7 +26,7 @@ public class QuestionController {
     }
 
     @PostMapping()
-    public ResponseEntity<QuestionDTO> createQuestion(@RequestBody QuestionCreationDTO questionCreationDTO) {
+    public ResponseEntity<QuestionDTO> createQuestion(@Valid @RequestBody QuestionCreationDTO questionCreationDTO) {
         QuestionDTO savedQuestion = questionService.createQuestion(questionCreationDTO);
         return new ResponseEntity<>(savedQuestion, HttpStatus.CREATED);
     }
@@ -37,7 +39,7 @@ public class QuestionController {
 
     @PutMapping("{id}")
     public ResponseEntity<QuestionDTO> updateQuestion(@PathVariable("id") Long id,
-                                                    @RequestBody QuestionUpdateDTO updateQuestionDTO) {
+                                                      @Valid @RequestBody QuestionUpdateDTO updateQuestionDTO) {
         questionService.updateQuestion(id, updateQuestionDTO);
         QuestionDTO afterUpdateQuestionDTO = questionService.getQuestion(id);
         return new ResponseEntity<>(afterUpdateQuestionDTO, HttpStatus.OK);

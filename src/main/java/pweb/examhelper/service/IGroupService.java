@@ -10,7 +10,7 @@ public interface IGroupService {
     GroupDTO createGroup(GroupCreationDTO groupCreationDTO);
     GroupDTO getGroup(Long id);
     void deleteGroup(Long id);
-    void changeGroupName(String newName, Long id);
+    GroupDTO changeGroupName(String newName, Long id);
     StudentDTO addStudentToGroup(GroupStudentAddDTO addStudentDTO, Long id);
     void removeStudentFromGroup(Long studentId, Long groupId);
     StudentDTO changeStudentGroupRole(Role newRole, Long studentId, Long groupId);

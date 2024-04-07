@@ -7,5 +7,5 @@ import lombok.Getter;
 @Getter
 public class GroupStudentUpdateRoleDTO {
     private Long studentId;
-    private String newRole;
+    private String role;
 }

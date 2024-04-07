@@ -1,13 +1,16 @@
 package pweb.examhelper.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pweb.examhelper.constants.ErrorMessage;
 import pweb.examhelper.dto.group.*;
 import pweb.examhelper.dto.student.StudentDTO;
 import pweb.examhelper.enums.Role;
+import pweb.examhelper.exception.BadRequestException;
 import pweb.examhelper.response.JsonResponse;
 import pweb.examhelper.service.GroupService;
 
@@ -24,8 +27,10 @@ public class GroupController {
     }
 
     @PostMapping
-    public ResponseEntity<GroupDTO> createGroup(@RequestBody GroupCreationDTO groupCreationDTO) {
-
+    public ResponseEntity<GroupDTO> createGroup(@Valid @RequestBody GroupCreationDTO groupCreationDTO) {
+        if(groupCreationDTO.getDefaultAdminId() == null) {
+            throw new BadRequestException(ErrorMessage.NO_ADMIN_PROVIDED);
+        }
         GroupDTO savedGroup = groupService.createGroup(groupCreationDTO);
         return new ResponseEntity<>(savedGroup, HttpStatus.CREATED);
     }
@@ -36,40 +41,40 @@ public class GroupController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<JsonResponse> changeGroupName(@RequestBody GroupUpdateNameDTO groupUpdateNameDTO,
+    public ResponseEntity<GroupDTO> changeGroupName(@Valid @RequestBody GroupUpdateNameDTO groupUpdateNameDTO,
                                                         @PathVariable Long id) {
-        groupService.changeGroupName(groupUpdateNameDTO.getNewName(), id);
-        return ResponseEntity.ok(new JsonResponse("Changed group name with id " + id + " to "
-                + groupUpdateNameDTO.getNewName()));
+        GroupDTO updatedGroupDTO = groupService.changeGroupName(groupUpdateNameDTO.getName(), id);
+        return ResponseEntity.ok(updatedGroupDTO);
     }
 
     @PostMapping("/{groupId}/members")
     public ResponseEntity<StudentDTO> addStudentToGroup(@PathVariable("groupId") Long groupId,
-                                                        @RequestBody GroupStudentAddDTO addStudentDTO) {
+                                                        @Valid @RequestBody GroupStudentAddDTO addStudentDTO) {
         if(EnumUtils.isValidEnum(Role.class, addStudentDTO.getRole())) {
             StudentDTO savedStudentGroup = groupService.addStudentToGroup(addStudentDTO, groupId);
             return new ResponseEntity<>(savedStudentGroup, HttpStatus.OK);
         } else {
-            throw new RuntimeException();
+            throw new BadRequestException(ErrorMessage.INVALID_ROLE);
         }
 
     }
 
     @PutMapping("{groupId}/members/")
-    public ResponseEntity<JsonResponse> changeStudentRole(@RequestBody GroupStudentUpdateRoleDTO updateRoleDTO,
+    public ResponseEntity<JsonResponse> changeStudentRole(@Valid @RequestBody GroupStudentUpdateRoleDTO updateRoleDTO,
                                                            Long groupId) {
-        if(EnumUtils.isValidEnum(Role.class, updateRoleDTO.getNewRole())) {
-            StudentDTO student =  groupService.changeStudentGroupRole(Role.valueOf(updateRoleDTO.getNewRole()), updateRoleDTO.getStudentId() , groupId);
-            return ResponseEntity.ok(new JsonResponse("Changed role for "  + updateRoleDTO.getStudentId() + "to " + updateRoleDTO.getNewRole()));
+        if(EnumUtils.isValidEnum(Role.class, updateRoleDTO.getRole())) {
+            StudentDTO student =  groupService.changeStudentGroupRole(Role.valueOf(updateRoleDTO.getRole()), updateRoleDTO.getStudentId() , groupId);
+            return ResponseEntity.ok(new JsonResponse("Changed role for "  + updateRoleDTO.getStudentId() + "to " + updateRoleDTO.getRole()));
         } else {
-            throw new RuntimeException();
+            throw new BadRequestException(ErrorMessage.INVALID_ROLE);
         }
 
     }
 
     @DeleteMapping("{groupId}/members/{studentId}")
-    public void removeStudentFromGroup(@PathVariable Long studentId, @PathVariable Long groupId) {
+    public ResponseEntity<Void> removeStudentFromGroup(@PathVariable Long studentId, @PathVariable Long groupId) {
         groupService.removeStudentFromGroup(studentId, groupId);
+        return ResponseEntity.noContent().build();
     }
 
 

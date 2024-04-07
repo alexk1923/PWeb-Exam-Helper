@@ -3,9 +3,11 @@ package pweb.examhelper.service;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import pweb.examhelper.constants.ErrorMessage;
 import pweb.examhelper.dto.question.*;
 import pweb.examhelper.entity.Answer;
 import pweb.examhelper.entity.Question;
+import pweb.examhelper.exception.ResourceNotFoundException;
 import pweb.examhelper.logger.LoggingController;
 import pweb.examhelper.mapper.AnswerMapper;
 import pweb.examhelper.mapper.QuestionMapper;
@@ -48,7 +50,8 @@ public class QuestionService implements IQuestionService{
 
     @Override
     public QuestionDTO getQuestion(Long id) {
-        Question question = questionRepository.findById(id).orElseThrow(RuntimeException::new);
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.RESOURCE_NOT_FOUND));
         return QuestionMapper.mapToQuestionDTO(question);
     }
 
@@ -57,10 +60,11 @@ public class QuestionService implements IQuestionService{
     @Transactional
     public QuestionDTO updateQuestion(Long id, QuestionUpdateDTO updateData) {
         LoggingController.getLogger().info("Starting to update question with id " + id);
-        Question question = questionRepository.findById(id).orElseThrow(RuntimeException::new);
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.RESOURCE_NOT_FOUND));
 
         // Update text if not empty
-        if(updateData.getText().length() > 0) {
+        if(updateData.getText() != null && updateData.getText().length() > 0) {
             question.setText(updateData.getText());
         }
 
@@ -70,6 +74,7 @@ public class QuestionService implements IQuestionService{
         for(Answer existingAnswer : question.getAnswers()) {
             boolean isPresent = false;
             for(AnswerDTOCreation newAnswer : updateData.getAnswers()) {
+                // Check if an existing answer is present in the new request
                 if(newAnswer.getText().equals(existingAnswer.getText()) && newAnswer.getIsCorrect().equals(existingAnswer.getIsCorrect())) {
                     isPresent = true;
                     break;
@@ -88,7 +93,6 @@ public class QuestionService implements IQuestionService{
             newAnswers.add(a);
         }
 
-
         question.setAnswers(newAnswers);
         Question afterUpdateQuestion = questionRepository.save(question);
         return QuestionMapper.mapToQuestionDTO(afterUpdateQuestion);
@@ -96,7 +100,8 @@ public class QuestionService implements IQuestionService{
 
     @Override
     public void deleteQuestion(Long id) {
-        Question deletedQuestion = questionRepository.findById(id).orElseThrow(RuntimeException::new);
+        Question deletedQuestion = questionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.RESOURCE_NOT_FOUND));
         questionRepository.delete(deletedQuestion);
     }
 }

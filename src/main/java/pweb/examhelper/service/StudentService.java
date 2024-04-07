@@ -54,7 +54,7 @@ public class StudentService implements IStudentService{
     @Override
     public StudentDTO updateStudent(Long id, StudentUpdateDTO updateData) {
         Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.RESOURCE_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.UPDATE_NOT_FOUND));
         if(updateData.getFirstName() != null && updateData.getFirstName().length() > 0) {
             student.setFirstName(updateData.getFirstName());
         }
@@ -70,7 +70,7 @@ public class StudentService implements IStudentService{
     @Override
     public void deleteStudent(Long id) {
         Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.RESOURCE_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.DELETE_NOT_FOUND));
         studentRepository.delete(student);
     }
 }

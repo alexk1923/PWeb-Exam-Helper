@@ -6,8 +6,8 @@ import lombok.*;
 import java.util.Set;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Table(name = "group_table")
 @Entity
 @Getter
@@ -19,6 +19,7 @@ public class Group {
     @NonNull
     private String name;
 
+    @NonNull
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<GroupStudent> groupStudents;
 

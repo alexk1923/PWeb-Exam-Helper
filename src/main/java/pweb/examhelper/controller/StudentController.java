@@ -1,5 +1,6 @@
 package pweb.examhelper.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class StudentController {
     private StudentService studentService;
 
     @PostMapping
-    public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentCreationDTO studentCreationDTO) {
+    public ResponseEntity<StudentDTO> createStudent(@Valid @RequestBody StudentCreationDTO studentCreationDTO) {
         StudentDTO savedStudent = studentService.createStudent(studentCreationDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedStudent);
     }
@@ -38,7 +39,7 @@ public class StudentController {
 
     @PutMapping("{id}")
     public ResponseEntity<StudentDTO> updateStudent(@PathVariable("id") Long id,
-                                                    @RequestBody StudentUpdateDTO updatedStudentDTO) {
+                                                    @Valid @RequestBody StudentUpdateDTO updatedStudentDTO) {
         StudentDTO afterUpdateStudentDTO = studentService.updateStudent(id, updatedStudentDTO);
         return ResponseEntity.status(HttpStatus.OK).body(afterUpdateStudentDTO);
     }

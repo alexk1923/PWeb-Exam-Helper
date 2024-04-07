@@ -1,14 +1,12 @@
 package pweb.examhelper.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pweb.examhelper.dto.quiz.QuizAddQuestionDTO;
 import pweb.examhelper.dto.quiz.QuizCreationDTO;
 import pweb.examhelper.dto.quiz.QuizDTO;
-import pweb.examhelper.dto.quiz.QuizDeleteQuestionDTO;
-import pweb.examhelper.dto.subject.SubjectAddQuizDTO;
 import pweb.examhelper.dto.subject.SubjectCreationDTO;
 import pweb.examhelper.dto.subject.SubjectDTO;
 import pweb.examhelper.logger.LoggingController;
@@ -18,12 +16,13 @@ import pweb.examhelper.service.SubjectService;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/subject")
+@Valid
 public class SubjectController {
     private SubjectService subjectService;
     private QuizService quizService;
 
     @PostMapping
-    public ResponseEntity<SubjectDTO> createSubject(@RequestBody SubjectCreationDTO subjectCreationDTO) {
+    public ResponseEntity<SubjectDTO> createSubject(@Valid @RequestBody SubjectCreationDTO subjectCreationDTO) {
         SubjectDTO createdSubject = subjectService.createSubject(subjectCreationDTO);
         return ResponseEntity.ok(createdSubject);
     }
@@ -42,7 +41,8 @@ public class SubjectController {
     }
 
     @PostMapping("{subjectId}/quizzes")
-    public ResponseEntity<QuizDTO> createQuiz(@PathVariable Long subjectId, @RequestBody QuizCreationDTO quizCreationDTO) {
+    public ResponseEntity<QuizDTO> createQuiz(@PathVariable Long subjectId,
+                                              @Valid @RequestBody QuizCreationDTO quizCreationDTO) {
         QuizDTO quizDTO = quizService.createQuiz(quizCreationDTO, subjectId);
         return ResponseEntity.ok(quizDTO);
     }
@@ -50,7 +50,7 @@ public class SubjectController {
     @PutMapping("{subjectId}/quizzes/{quizId}")
     public ResponseEntity<QuizDTO> addQuestionToQuiz(@PathVariable Long subjectId,
                                                      @PathVariable Long quizId,
-                                                     @RequestBody QuizAddQuestionDTO quizAddQuestionDTO) {
+                                                     @Valid @RequestBody QuizAddQuestionDTO quizAddQuestionDTO) {
         QuizDTO quizDTO = quizService.addQuestionToQuiz(subjectId, quizId, quizAddQuestionDTO.getQuestionId());
         return ResponseEntity.ok(quizDTO);
     }
