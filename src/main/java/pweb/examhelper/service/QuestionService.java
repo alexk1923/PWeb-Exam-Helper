@@ -37,7 +37,6 @@ public class QuestionService implements IQuestionService{
         }
 
         q.setAnswers(newAnswers);
-
         Question savedQuestion = questionRepository.save(q);
         return QuestionMapper.mapToQuestionDTO(savedQuestion);
     }
@@ -51,7 +50,7 @@ public class QuestionService implements IQuestionService{
     @Override
     public QuestionDTO getQuestion(Long id) {
         Question question = questionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.RESOURCE_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.QUESTION_NOT_FOUND));
         return QuestionMapper.mapToQuestionDTO(question);
     }
 
@@ -60,7 +59,7 @@ public class QuestionService implements IQuestionService{
     @Transactional
     public QuestionDTO updateQuestion(Long id, QuestionUpdateDTO updateData) {
         Question question = questionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.RESOURCE_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.QUESTION_NOT_FOUND));
 
         // Update text if not empty
         if(updateData.getText() != null && updateData.getText().length() > 0) {
@@ -100,7 +99,7 @@ public class QuestionService implements IQuestionService{
     @Override
     public void deleteQuestion(Long id) {
         Question deletedQuestion = questionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.RESOURCE_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.QUESTION_NOT_FOUND));
         questionRepository.delete(deletedQuestion);
     }
 }

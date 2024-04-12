@@ -47,7 +47,7 @@ public class SubjectController {
         return ResponseEntity.ok(quizDTO);
     }
 
-    @PutMapping("{subjectId}/quizzes/{quizId}")
+    @PostMapping("{subjectId}/quizzes/{quizId}/questions")
     public ResponseEntity<QuizDTO> addQuestionToQuiz(@PathVariable Long subjectId,
                                                      @PathVariable Long quizId,
                                                      @Valid @RequestBody QuizAddQuestionDTO quizAddQuestionDTO) {
@@ -56,18 +56,22 @@ public class SubjectController {
     }
 
     @DeleteMapping("{id}")
-    public void deleteSubject(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteSubject(@PathVariable Long id) {
         subjectService.deleteSubject(id);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("{subjectId}/quizzes/{quizId}")
-    public void deleteQuiz(@PathVariable Long subjectId, @PathVariable Long quizId) {
+    public ResponseEntity<Void> deleteQuiz(@PathVariable Long subjectId, @PathVariable Long quizId) {
         quizService.deleteQuiz(subjectId, quizId);
+        return ResponseEntity.noContent().build();
+
     }
 
     @DeleteMapping("{subjectId}/quizzes/{quizId}/questions/{questionId}")
-    public void deleteQuestionFromQuiz(@PathVariable Long subjectId, @PathVariable Long quizId,
+    public ResponseEntity<Void> deleteQuestionFromQuiz(@PathVariable Long subjectId, @PathVariable Long quizId,
                                        @PathVariable Long questionId) {
         quizService.deleteQuestionFromQuiz(subjectId, quizId, questionId);
+        return ResponseEntity.noContent().build();
     }
 }

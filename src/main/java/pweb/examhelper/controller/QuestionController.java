@@ -46,9 +46,8 @@ public class QuestionController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<JsonResponse> deleteQuestion(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteQuestion(@PathVariable("id") Long id) {
         questionService.deleteQuestion(id);
-        JsonResponse response = new JsonResponse("Question with id " + id + " deleted");
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 }

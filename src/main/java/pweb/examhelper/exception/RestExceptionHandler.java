@@ -38,7 +38,14 @@ public class RestExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<ApiError> internalServerError(RuntimeException exception) {
         String message = (exception.getMessage() != null) ? exception.getMessage() : "No message available";
-        ApiError apiError = new ApiError(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, new Date());
+        ApiError apiError = new ApiError(message, HttpStatus.INTERNAL_SERVER_ERROR, new Date());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
+    }
+
+    @ExceptionHandler(value = DatabaseUpdateException.class)
+    public ResponseEntity<ApiError> databaseUpdateError(RuntimeException exception) {
+        String message = (exception.getMessage() != null) ? exception.getMessage() : "No message available";
+        ApiError apiError = new ApiError(message, HttpStatus.INTERNAL_SERVER_ERROR, new Date());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
     }
 

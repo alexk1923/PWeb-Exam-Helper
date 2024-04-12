@@ -17,4 +17,16 @@ public final class ErrorMessage {
     public static final String NO_ADMIN_PROVIDED = "No admin has been provided for the group";
     public static final String RESOURCE_CONFLICT = "A resource with the same identifier already exists.";
 
+    // QUESTION
+    public static final String QUESTION_NOT_FOUND = "Question not found.";
+
+    // SUBJECT
+    public static final String SUBJECT_NOT_FOUND = "Subject not found.";
+
+    // QUIZ
+    public static final String QUIZ_NOT_FOUND = "Quiz not found.";
+
+    // DATABASE
+    public static final String DATABASE_UPDATE_FAILED = "Database operation failed.";
+
 }

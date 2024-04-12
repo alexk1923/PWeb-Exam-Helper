@@ -2,16 +2,19 @@ package pweb.examhelper.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pweb.examhelper.dto.subject.SubjectAddQuizDTO;
+import pweb.examhelper.constants.ErrorMessage;
+import pweb.examhelper.dto.student.SubjectUpdateDTO;
 import pweb.examhelper.dto.subject.SubjectCreationDTO;
 import pweb.examhelper.dto.subject.SubjectDTO;
-import pweb.examhelper.entity.Quiz;
+import pweb.examhelper.entity.Student;
 import pweb.examhelper.entity.Subject;
-import pweb.examhelper.mapper.QuizMapper;
+import pweb.examhelper.exception.ResourceNotFoundException;
+import pweb.examhelper.mapper.StudentMapper;
 import pweb.examhelper.mapper.SubjectMapper;
 import pweb.examhelper.repository.SubjectRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -21,12 +24,14 @@ public class SubjectService implements ISubjectService{
 
     @Override
     public List<SubjectDTO> getAllSubjects() {
-        return null;
+        List<Subject> subjectList = subjectRepository.findAll();
+        return subjectList.stream().map(SubjectMapper::toSubjectDTO).collect(Collectors.toList());
     }
 
     @Override
     public SubjectDTO getSubject(Long id) {
-        Subject subject = subjectRepository.findById(id).orElseThrow(RuntimeException::new);
+        Subject subject = subjectRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.SUBJECT_NOT_FOUND));
         return SubjectMapper.toSubjectDTO(subject);
 
     }
@@ -39,12 +44,18 @@ public class SubjectService implements ISubjectService{
     }
 
     @Override
-    public SubjectDTO updateSubject() {
-        return null;
+    public SubjectDTO updateSubject(Long id, SubjectUpdateDTO subjectUpdateDTO) {
+        Subject subject = subjectRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.SUBJECT_NOT_FOUND));
+        subject.setTitle(subjectUpdateDTO.getTitle());
+        Subject updatedSubject = subjectRepository.save(subject);
+        return SubjectMapper.toSubjectDTO(updatedSubject);
     }
 
     @Override
     public void deleteSubject(Long id) {
+        subjectRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.SUBJECT_NOT_FOUND));
         subjectRepository.deleteById(id);
     }
 }
