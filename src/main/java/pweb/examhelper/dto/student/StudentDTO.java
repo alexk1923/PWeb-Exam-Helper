@@ -27,6 +27,4 @@ public class StudentDTO {
 
     private List<GroupInfoDTO> groups;
 
-
-
 }

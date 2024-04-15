@@ -1,15 +1,14 @@
 package pweb.examhelper.controller;
-
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pweb.examhelper.dto.auth.LoginDTO;
 import pweb.examhelper.dto.student.StudentDTO;
 import pweb.examhelper.dto.student.StudentCreationDTO;
 import pweb.examhelper.dto.student.StudentUpdateDTO;
 import pweb.examhelper.service.StudentService;
-
 import java.util.List;
 
 @AllArgsConstructor
@@ -19,11 +18,7 @@ public class StudentController {
 
     private StudentService studentService;
 
-    @PostMapping
-    public ResponseEntity<StudentDTO> createStudent(@Valid @RequestBody StudentCreationDTO studentCreationDTO) {
-        StudentDTO savedStudent = studentService.createStudent(studentCreationDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedStudent);
-    }
+
 
     @GetMapping
     public ResponseEntity<List<StudentDTO>> getAllStudents() {

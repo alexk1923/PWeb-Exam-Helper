@@ -26,4 +26,7 @@ public class StudentCreationDTO {
     @NotEmpty
     @Email
     private String email;
+    @NotNull
+    @NotEmpty
+    private String password;
 }

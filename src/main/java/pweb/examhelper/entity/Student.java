@@ -2,7 +2,11 @@ package pweb.examhelper.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -27,4 +31,7 @@ public class Student {
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<GroupStudent> groups;
+
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
+    private Credential credential;
 }

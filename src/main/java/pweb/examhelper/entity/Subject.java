@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class Subject {
+public class Subject{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
