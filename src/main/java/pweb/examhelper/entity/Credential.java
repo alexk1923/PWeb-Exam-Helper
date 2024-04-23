@@ -3,7 +3,9 @@ package pweb.examhelper.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pweb.examhelper.enums.StandardRole;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -27,9 +29,12 @@ public class Credential implements UserDetails {
 
     @NonNull private String encryptedPassword;
 
+
+    @NonNull private StandardRole standardRole;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return Collections.singletonList(new SimpleGrantedAuthority(standardRole.name()));
     }
 
     @Override

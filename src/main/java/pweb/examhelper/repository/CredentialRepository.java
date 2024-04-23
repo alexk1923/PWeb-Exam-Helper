@@ -6,5 +6,6 @@ import pweb.examhelper.entity.Credential;
 import java.util.Optional;
 
 public interface CredentialRepository extends JpaRepository<Credential, Long> {
+
     Optional<Credential> findByStudent_Username(String username);
 }

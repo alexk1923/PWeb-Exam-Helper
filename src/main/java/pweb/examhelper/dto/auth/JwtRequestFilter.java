@@ -20,6 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import pweb.examhelper.exception.ApiError;
 import pweb.examhelper.exception.AuthorizationException;
 import pweb.examhelper.exception.TokenExpiredException;
+import pweb.examhelper.logger.LoggingController;
 import pweb.examhelper.service.AuthUserDetailsService;
 import pweb.examhelper.service.StudentService;
 
@@ -33,8 +34,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private AuthUserDetailsService authUserDetailsService;
     private JwtTokenUtil jwtUtil;
 
-    // constructor and other methods...
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
@@ -45,6 +44,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String jwt = null;
 
         try {
+
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 jwt = authorizationHeader.substring(7);
                 username = jwtUtil.getUsernameFromToken(jwt);
@@ -56,7 +56,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = authUserDetailsService.loadUserByUsername(username);
-
                 if (jwtUtil.validateToken(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());

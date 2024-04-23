@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import pweb.examhelper.constants.ErrorMessage;
 import pweb.examhelper.dto.auth.JwtTokenUtil;
 import pweb.examhelper.dto.auth.LoginDTO;
+import pweb.examhelper.dto.auth.LoginResponse;
 import pweb.examhelper.dto.student.StudentDTO;
 import pweb.examhelper.dto.student.StudentCreationDTO;
 import pweb.examhelper.dto.student.StudentUpdateDTO;
@@ -22,6 +23,7 @@ import pweb.examhelper.entity.Credential;
 import pweb.examhelper.entity.Student;
 import pweb.examhelper.exception.ResourceAlreadyExists;
 import pweb.examhelper.exception.ResourceNotFoundException;
+import pweb.examhelper.logger.LoggingController;
 import pweb.examhelper.mapper.StudentMapper;
 import pweb.examhelper.repository.CredentialRepository;
 import pweb.examhelper.repository.StudentRepository;
@@ -62,14 +64,15 @@ public class StudentService implements IStudentService {
         Student savedStudent = studentRepository.save(student);
 
         // Create and save the credential
-        Credential credential = new Credential(savedStudent, encryptedPassword);
+        Credential credential = new Credential(savedStudent, encryptedPassword,
+                studentCreationDTO.getStandardRole());
         credentialRepository.save(credential);
 
         return StudentMapper.mapToStudentDTO(savedStudent);
     }
 
     @Override
-    public String login(LoginDTO loginDTO) {
+    public LoginResponse login(LoginDTO loginDTO) {
         // Authenticate the student
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
@@ -78,16 +81,7 @@ public class StudentService implements IStudentService {
 
         // Generate a JWT
         UserDetails userDetails = authUserDetailsService.loadUserByUsername(loginDTO.getUsername());
-        return jwtUtil.generateToken(userDetails);
-
-//        // Generate a JWT
-//        String token = Jwts.builder()
-//                .setSubject(loginDTO.getUsername())
-//                .claim("roles", "student")
-//                .setIssuedAt(new Date())
-//                .signWith(SignatureAlgorithm.HS256, "secret".getBytes())
-//                .compact();
-//        return token;
+        return new LoginResponse(userDetails.getUsername(), jwtUtil.generateToken(userDetails));
     }
 
 

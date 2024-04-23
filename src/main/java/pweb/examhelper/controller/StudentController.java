@@ -3,6 +3,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pweb.examhelper.dto.auth.LoginDTO;
 import pweb.examhelper.dto.student.StudentDTO;
@@ -19,13 +20,14 @@ public class StudentController {
     private StudentService studentService;
 
 
-
+    @PreAuthorize("hasAuthority('PROFESSOR')")
     @GetMapping
     public ResponseEntity<List<StudentDTO>> getAllStudents() {
         List<StudentDTO> studentsList = studentService.getAllStudents();
         return ResponseEntity.status(HttpStatus.OK).body(studentsList);
     }
 
+    @PreAuthorize("hasAuthority('STUDENT')")
     @GetMapping("{id}")
     public ResponseEntity<StudentDTO> getStudent(@PathVariable("id") Long id) {
         StudentDTO studentDTO = studentService.getStudent(id);

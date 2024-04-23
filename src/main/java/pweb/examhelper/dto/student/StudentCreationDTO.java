@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import pweb.examhelper.enums.StandardRole;
 
 @AllArgsConstructor
 @Getter
@@ -29,4 +30,5 @@ public class StudentCreationDTO {
     @NotNull
     @NotEmpty
     private String password;
+    private StandardRole standardRole;
 }
