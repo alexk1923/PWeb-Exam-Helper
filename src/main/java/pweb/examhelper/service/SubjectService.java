@@ -1,6 +1,8 @@
 package pweb.examhelper.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pweb.examhelper.constants.ErrorMessage;
 import pweb.examhelper.dto.student.SubjectUpdateDTO;
@@ -23,9 +25,9 @@ public class SubjectService implements ISubjectService{
     private SubjectRepository subjectRepository;
 
     @Override
-    public List<SubjectDTO> getAllSubjects() {
-        List<Subject> subjectList = subjectRepository.findAll();
-        return subjectList.stream().map(SubjectMapper::toSubjectDTO).collect(Collectors.toList());
+    public Page<SubjectDTO> getAllSubjects(Pageable pageable) {
+        Page<Subject> subjectList = subjectRepository.findAll(pageable);
+        return subjectList.map(SubjectMapper::toSubjectDTO);
     }
 
     @Override

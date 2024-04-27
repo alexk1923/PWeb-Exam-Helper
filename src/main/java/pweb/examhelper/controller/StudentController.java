@@ -1,6 +1,8 @@
 package pweb.examhelper.controller;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,21 +21,21 @@ public class StudentController {
 
     private StudentService studentService;
 
-
     @PreAuthorize("hasAuthority('PROFESSOR')")
     @GetMapping
-    public ResponseEntity<List<StudentDTO>> getAllStudents() {
-        List<StudentDTO> studentsList = studentService.getAllStudents();
+    public ResponseEntity<Page<StudentDTO>> getAllStudents(Pageable pageable) {
+        Page<StudentDTO> studentsList = studentService.getAllStudents(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(studentsList);
     }
 
-    @PreAuthorize("hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('PROFESSOR')")
     @GetMapping("{id}")
     public ResponseEntity<StudentDTO> getStudent(@PathVariable("id") Long id) {
         StudentDTO studentDTO = studentService.getStudent(id);
         return ResponseEntity.status(HttpStatus.OK).body(studentDTO);
     }
 
+    @PreAuthorize("hasAuthority('STUDENT')")
     @PutMapping("{id}")
     public ResponseEntity<StudentDTO> updateStudent(@PathVariable("id") Long id,
                                                     @Valid @RequestBody StudentUpdateDTO updatedStudentDTO) {
@@ -41,6 +43,7 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.OK).body(afterUpdateStudentDTO);
     }
 
+    @PreAuthorize("hasAuthority('STUDENT')")
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable("id") Long id) {
         studentService.deleteStudent(id);

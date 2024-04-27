@@ -2,6 +2,8 @@ package pweb.examhelper.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +23,8 @@ public class QuestionController {
     private QuestionService questionService;
 
     @GetMapping
-    public List<QuestionDTO> getAllQuestions() {
-        return questionService.getAllQuestions();
+    public ResponseEntity<Page<QuestionDTO>> getAllQuestions(Pageable pageable) {
+        return ResponseEntity.ok(questionService.getAllQuestions(pageable));
     }
 
     @PostMapping()

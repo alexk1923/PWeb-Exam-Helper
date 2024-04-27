@@ -3,6 +3,8 @@ package pweb.examhelper.service;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -86,9 +88,9 @@ public class StudentService implements IStudentService {
 
 
     @Override
-    public List<StudentDTO> getAllStudents() {
-        List<Student> studentsList = studentRepository.findAll();
-        return studentsList.stream().map(StudentMapper::mapToStudentDTO).collect(Collectors.toList());
+    public Page<StudentDTO> getAllStudents(Pageable pageable) {
+        Page<Student> studentsList = studentRepository.findAll(pageable);
+        return studentsList.map(StudentMapper::mapToStudentDTO);
     }
 
     @Override

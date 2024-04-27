@@ -2,6 +2,8 @@ package pweb.examhelper.service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pweb.examhelper.constants.ErrorMessage;
 import pweb.examhelper.dto.question.*;
@@ -42,9 +44,9 @@ public class QuestionService implements IQuestionService{
     }
 
     @Override
-    public List<QuestionDTO> getAllQuestions() {
-        List<Question> questions = questionRepository.findAll();
-        return questions.stream().map(QuestionMapper::mapToQuestionDTO).collect(Collectors.toList());
+    public Page<QuestionDTO> getAllQuestions(Pageable pageable) {
+        Page<Question> questions = questionRepository.findAll(pageable);
+        return questions.map(QuestionMapper::mapToQuestionDTO);
     }
 
     @Override
